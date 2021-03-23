@@ -1,0 +1,60 @@
+---
+- name: Install python3, docker, docker-compose
+  hosts: all
+  become: yes
+  gather_facts: False
+  tasks:
+    - name: Install python3 and docker
+      vars:
+        ansible_python_interpreter: /usr/bin/python
+      yum:
+        name:
+          - python3
+          - docker
+        update_cache: yes
+        state: present
+    - name: Install Docker-compose
+      get_url: 
+        url: https://github.com/docker/compose/releases/download/1.27.4/docker-compose-Linux-{{lookup('pipe', 'uname -m')}}
+        dest: /usr/local/bin/docker-compose
+        mode: +x
+    - name: Start docker daemon
+      systemd:
+        name: docker
+        state: started
+    - name: Install docker python module
+      pip:
+        name: 
+          - docker
+          - docker-compose
+    
+
+- name: Create new linux user
+  hosts: all
+  become: yes
+  tasks: 
+    - name: Create new linux user
+      user:
+        name: nana
+        groups: adm,docker
+
+
+- name: Start docker containers
+  hosts: all
+  become: yes
+  become_user: nana
+  vars_files:
+    - project-vars
+  tasks:
+    - name: Copy docker compose
+      copy:
+        src: /Users/nanajanashia/Demo-projects/Bootcamp/Exercises/bootcamp-java-mysql-project/docker-compose-full.yaml
+        dest: /home/nana/docker-compose.yaml
+    - name: Docker login
+      docker_login: 
+        registry_url: https://index.docker.io/v1/
+        username: nanajanashia
+        password: "{{docker_password}}"
+    - name: Start container from compose
+      docker_compose: 
+        project_src: /home/nana

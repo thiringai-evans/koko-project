@@ -1,2 +1,5 @@
 [nexus_server]
 134.122.92.122 ansible_ssh_private_key_file=~/.ssh/id_rsa ansible_user=root
+
+[docker_server]
+35.180.25.170 ansible_ssh_private_key_file=~/.ssh/id_rsa ansible_user=ec2-user
