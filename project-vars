@@ -3,4 +3,4 @@ location: /Users/nanajanashia/Demo-projects/Bootcamp/nodejs-app
 linux_name: nana
 user_home_dir: /home/{{linux_name}}
 
-docker_password: 7ODBW1uxVmqjcZFVqEEdcHa2g
+docker_password: xxxxx

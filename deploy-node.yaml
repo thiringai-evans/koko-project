@@ -3,9 +3,9 @@
   hosts: 159.89.1.54
   tasks:
     - name: Update apt repo and cache
-      apt: update_cache=yes force_apt_get=yes cache_valid_time=3600
+      ansible.builtin.apt: update_cache=yes force_apt_get=yes cache_valid_time=3600
     - name: Install nodejs and npm
-      apt: 
+      ansible.builtin.apt: 
         pkg:
           - nodejs
           - npm
@@ -17,7 +17,7 @@
     - project-vars  
   tasks:
     - name: Create linux user
-      user:
+      ansible.builtin.user:
         name: "{{linux_name}}"
         comment: Node User
         group: admin
@@ -31,19 +31,19 @@
     - project-vars
   tasks:
     - name: Unpack the nodejs file
-      unarchive:
+      ansible.builtin.unarchive:
         src: "{{location}}/nodejs-app-{{version}}.tgz"
         dest: "{{user_home_dir}}"
     - name: Install dependencies
-      npm:
+      community.general.npm:
         path: "{{user_home_dir}}/package"
     - name: Start the application
-      command: 
+      ansible.builtin.command: 
         chdir: "{{user_home_dir}}/package/app"
         cmd: node server
       async: 1000
       poll: 0  
     - name: Ensure app is running
-      shell: ps aux | grep node
+      ansible.builtin.shell: ps aux | grep node
       register: app_status
-    - debug: msg={{app_status.stdout_lines}}
+    - ansible.builtin.debug: msg={{app_status.stdout_lines}}

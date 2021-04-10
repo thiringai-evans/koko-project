@@ -3,13 +3,13 @@
   hosts: localhost
   tasks:
     - name: Create a k8s namespace
-      k8s:
+      community.kubernetes.k8s:
         name: my-app
         api_version: v1
         kind: Namespace
         state: present
     - name: Deploy nginx app 
-      k8s:
+      community.kubernetes.k8s:
         src: ~/Demo-projects/Simple-K8s-Files/nginx-config.yaml
         state: present
         namespace: my-app
