@@ -22,6 +22,7 @@ N/B
 - An s3 backend has already been initialized for this. Create your own.
 - Ensure you have configured aws-cli on your machine and authorized it.
 
+
 PULL AND PUSH DOCKER IMAGE WITH ANSIBLE
 ________________________________________
 1. Install ansible and all its dependencies.
