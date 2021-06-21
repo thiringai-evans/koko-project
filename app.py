@@ -12,7 +12,6 @@ external_ip = urllib.request.urlopen('https://ident.me').read().decode('utf8')
 def index():
     return jsonify({'TASK': 'KOKO NETWORKS DEVOPS',
                     'node_name': socket.gethostname(),
-                    'node_ip': socket.gethostbyname(socket.gethostname()),
                     'external_ip': external_ip,
                     })
 
