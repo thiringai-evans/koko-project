@@ -1,0 +1,13 @@
+- hosts: all
+  become: true
+  gather_facts: no
+
+  tasks:
+    - name: ensure a container is running
+      docker_container:
+        name: koko-thiringai
+        state: started
+        image: "thiringai/koko-thiringai:latest"
+        pull: true
+        ports:
+          - "5000:5000"
