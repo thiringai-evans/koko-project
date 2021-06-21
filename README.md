@@ -20,7 +20,7 @@ CREATE INSTANCE WITH TERRAFFORM.
 AWS-S3
 ---------------------------------------
 - An s3 bucket requires a unique name, make sure you change the bucket name. 
-- A good way of labelling a bucket is using your name/organisations followed by bucket purpose.
+- A good way of labelling a bucket is using your name or organisations name, followed by bucket purpose.
 - Ensure you have configured aws-cli on your machine and authorized it.
 
 PULL AND PUSH DOCKER IMAGE WITH ANSIBLE
