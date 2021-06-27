@@ -37,7 +37,7 @@ pipeline {
      stage('docker stop container') {
          steps {
             sh 'docker ps -f name=kokonetworksjenkins -q | xargs --no-run-if-empty docker container stop'
-            sh 'docker container ls -a -fname=kokonetworksjenkins -q | xargs -r docker container rm'
+            sh 'docker container ls -a -f name=kokonetworksjenkins -q | xargs -r docker container rm'
          }
        }
     
