@@ -50,5 +50,22 @@ pipeline {
          }
       }
     }
+
+    //deploy container to ec2 instance
+    stage("deploy to ec2 instance") {
+
+        steps {
+
+            script {
+                sshagent(['ec2-ssh']) {
+                    def dockercmd = 'docker run -p 5000:5000 -d thiringai/koko-thiringai'
+                    sh "ssh -o StrictHostKeyChecking=no ubuntu@3.217.235.52 ${dockercmd}"
+                }
+                
+            }
+
+        }
+
+    }
   }
 }
