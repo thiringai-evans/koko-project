@@ -3,3 +3,6 @@ __pycache__/
 .terraform
 terraform.tfstate
 terraform.tfstate.backup
+evans-koko-assignment.zip
+evans-koko-assignment/
+koko-assignment/
