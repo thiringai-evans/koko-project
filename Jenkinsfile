@@ -51,15 +51,37 @@ pipeline {
       }
     }
 
+    stage('provision TF ec2 instance') {
+        environment {
+            AWS_ACCESS_KEY_ID = credentials('aws_access_key_id')
+            AWS_SECRET_ACCESS_KEY = credentials('aws_secret_access_key')
+        }
+        steps{
+            script {
+                dir('terraform') {
+                    sh "terraform init"
+                    sh "terraform apply --auto-approve"
+                    EC2_PUBLIC_IP = sh(
+                        script: "terraform output ec2_public_ip"
+                        returnStdout: true
+                        ).trim()
+                }
+            }
+        }
+    }
+
     //deploy container to ec2 instance
     stage("deploy to ec2 instance") {
 
         steps {
 
             script {
+                echo "waiting for ec2 server to initialize"
+                echo "${EC2_PUBLIC_IP}"
+                sleep(time: 90, unit: "SECONDS")
                 sshagent(['ec2-ssh']) {
                     def dockercmd = 'docker run -p 5000:5000 -d thiringai/koko-thiringai'
-                    sh "ssh -o StrictHostKeyChecking=no ubuntu@3.217.235.52 ${dockercmd}"
+                    sh "ssh -o StrictHostKeyChecking=no ubuntu@${EC2_PUBLIC_IP} ${dockercmd}"
                 }
                 
             }
