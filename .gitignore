@@ -6,3 +6,4 @@ terraform.tfstate.backup
 evans-koko-assignment.zip
 evans-koko-assignment/
 koko-assignment/
+terraform/backend.tf
