@@ -59,7 +59,6 @@ pipeline {
         steps{
             script {
                 dir('terraform') {
-                    sh "terraform state replace-provider registry.terraform.io/-/aws hashicorp/aws"
                     sh "terraform init -migrate-state"
                     sh "terraform apply --auto-approve"
                     EC2_PUBLIC_IP = sh(
