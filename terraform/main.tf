@@ -38,7 +38,7 @@ resource "aws_instance" "TF-instance" {
   ami             = "ami-0c536cd6abac1a385"
   key_name        = var.key_name
   instance_type   = var.instance_type
-  security_groups = ["flask-access"]
+  security_groups = aws_security_group.flask-access.id
   tags = {
     Name = "TF-instance"
   }
