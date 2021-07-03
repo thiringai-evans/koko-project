@@ -4,7 +4,7 @@ provider "aws" {
 
 #Create security group with firewall rules
 resource "aws_security_group" "flask-access" {
-  name        = aws_security_group.flask-access.id
+  name        = flask-access
   description = "security group for flask-app"
 
   ingress {
@@ -39,6 +39,7 @@ resource "aws_instance" "TF-instance" {
   key_name        = var.key_name
   instance_type   = var.instance_type
   security_groups = aws_security_group.flask-access.id
+  user_data = file("entry-script.sh")
   tags = {
     Name = "TF-instance"
   }
