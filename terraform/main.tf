@@ -88,5 +88,5 @@ resource "aws_dynamodb_table" "dynamodb-terraform-state-lock" {
 }
 
 output "ec2_public_ip" {
-  aws_instance.TF-instance.public_ip
+  value = aws_instance.TF-instance.public_ip
 }
