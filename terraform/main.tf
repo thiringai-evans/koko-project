@@ -4,7 +4,7 @@ provider "aws" {
 
 #Create security group with firewall rules
 resource "aws_security_group" "flask-access" {
-  name        = flask-access
+  name        = "flask-access"
   description = "security group for flask-app"
 
   ingress {
