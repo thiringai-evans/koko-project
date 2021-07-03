@@ -2,7 +2,7 @@ pipeline {
     agent any 
     environment {
         registry = "thiringai/kokonetworksjenkins"
-        registryCredential = 'dockerhub'
+        registryCredential = 'docker-hub'
         dockerImage = ''
     }
     
