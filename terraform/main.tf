@@ -38,7 +38,7 @@ resource "aws_instance" "TF-instance" {
   ami             = "ami-0c536cd6abac1a385"
   key_name        = var.key_name
   instance_type   = var.instance_type
-  security_groups = [aws_security_group.flask-access.id]
+  security_groups = ["aws_security_group.flask-access.id"]
   user_data = file("entry-script.sh")
   tags = {
     Name = "TF-instance"
