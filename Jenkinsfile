@@ -59,8 +59,7 @@ pipeline {
         steps{
             script {
                 dir('terraform') {
-                    sh "terraform init -reconfigure"
-                    sh "terraform init -migrate-state"
+                    sh "terraform init"
                     sh "terraform apply --auto-approve"
                     EC2_PUBLIC_IP = sh(
                         script: "terraform output ec2_public_ip",
