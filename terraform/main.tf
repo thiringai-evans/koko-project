@@ -87,6 +87,11 @@ resource "aws_dynamodb_table" "dynamodb-terraform-state-lock" {
   }
 }
 
+resource "aws_instance" "ansible-worker" {
+  # ...instance configuration...
+  #...import instance state
+}
+
 output "ec2_public_ip" {
   value = aws_instance.TF-instance.public_ip
 }
