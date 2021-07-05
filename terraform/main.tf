@@ -90,6 +90,13 @@ resource "aws_dynamodb_table" "dynamodb-terraform-state-lock" {
 resource "aws_instance" "ansible-worker" {
   # ...instance configuration...
   #...import instance state
+  ami             = "ami-0ab4d1e9cf9a1215a"
+  key_name        = var.key_name
+  instance_type   = var.instance_type
+  security_groups = [aws_security_group.flask-access.name]
+  tags = {
+    Name = "ansible-worker"
+  }
 }
 
 output "ec2_public_ip" {
