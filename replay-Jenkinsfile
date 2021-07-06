@@ -1,0 +1,122 @@
+pipeline {
+    agent any 
+    environment {
+        registry = "thiringai/kokonetworksjenkins"
+        registryCredential = 'docker-hub'
+        dockerImage = ''
+        ANSIBLE_SERVER = "34.136.162.111"
+    }
+    
+    stages {
+        stage('Cloning Git') {
+            steps {
+                checkout([$class: 'GitSCM', branches: [[name: '*/master']], extensions: [], userRemoteConfigs: [[url: 'https://github.com/thiringai-evans/koko-project']]])       
+            }
+        }
+    
+    // Building specified docker image
+        stage('Building image') {
+            steps{
+                script {
+                   echo 'none'
+                }
+            }
+        }
+    
+     // Pushing Docker image into specified registry
+        stage('Upload Image') {
+            steps{    
+                script {
+                    echo 'none'
+                }
+            }
+        }
+    
+     // Stopping Docker containers for cleaner Docker run
+        stage('docker stop container') {
+            steps {
+                echo 'none'
+            }
+        }
+        
+    
+    // Running Docker container and open port 5000 
+        stage('Docker Run') {
+            steps{
+                script {
+                    echo 'none'
+                }
+            }
+        }
+
+        stage('provision TF ec2 instance') {
+            environment {
+                AWS_ACCESS_KEY_ID = credentials('aws_access_key_id')
+                AWS_SECRET_ACCESS_KEY = credentials('aws_secret_access_key')
+            }
+            steps{
+                script {
+                    dir('terraform') {
+                        echo 'none'
+                        EC2_PUBLIC_IP = sh(
+                            script: "terraform output ec2_public_ip",
+                            returnStdout: true
+                        ).trim()
+                    }
+                }
+            }
+        }
+
+    //deploy container to ec2 instance
+        stage("deploy to ec2 instance") {
+
+            steps {
+
+                script {
+                    echo "waiting for ec2 server to initialize"
+                   
+                    
+                }
+
+            }
+
+        }
+
+        stage("copy files to ansible server") {
+            steps {
+                script {
+                    echo "copying all neccessary files to ansible control node"
+                    sshagent(['ec2-ssh']) {
+                        sh "scp -o StrictHostKeyChecking=no ansible-playbooks/* thiringai@${ANSIBLE_SERVER}:/home/thiringai"
+
+                        withCredentials([sshUserPrivateKey(credentialsId: 'ansible-control-node', keyFileVariable: 'keyfile', usernameVariable: 'user')]) {
+                            sh 'scp $keyfile thiringai@$ANSIBLE_SERVER:/home/thiringai/ssh-key.pem'
+                        }
+                    }
+                }
+            }
+        }
+
+        stage("execute ansible playbook") {
+            steps {
+                script {
+                    echo "calling ansible playbook to configure ec2 instances"
+                    def remote = [:]
+                    remote.name = "ansible-server"
+                    remote.host = ANSIBLE_SERVER
+                    remote.allowAnyHosts = true
+
+                    withCredentials([sshUserPrivateKey(credentialsId: 'ansible-control-node', keyFileVariable: 'keyfile', usernameVariable: 'user')]){
+                        remote.user = user
+                        remote.identityFile = keyfile
+                        sshScript remote: remote, script: "prepare-ansible-server.sh"
+                        sshCommand remote: remote, command: "ansible-playbook debian-install-docker.yaml"
+                        sshCommand remote: remote, command: "ansible-playbook run_image.yaml"
+                        
+                    }
+                }
+            }
+        }
+    }
+
+}
