@@ -4,7 +4,7 @@ pipeline {
         registry = "thiringai/kokonetworksjenkins"
         registryCredential = 'docker-hub'
         dockerImage = ''
-        ANSIBLE_SERVER = "167.99.136.157"
+        ANSIBLE_SERVER = "34.136.162.111"
     }
     
     stages {
