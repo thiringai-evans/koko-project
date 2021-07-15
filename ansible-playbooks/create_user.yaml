@@ -1,0 +1,7 @@
+- name: Create new linux user for node app
+  hosts: all
+  tasks:
+    - name: Create user for ubuntu
+      user: evans
+      comment: evans as an admin user
+      group: admin
