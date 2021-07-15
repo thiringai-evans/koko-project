@@ -1,0 +1,24 @@
+- name: install flask with pip
+  hosts: all
+  become: yes
+  tasks:
+    - name: Install pip
+      apt:
+        name: pip
+        state: latest
+
+    - name: install flask
+      pip: name=flask
+
+    - name: start python app
+      command:
+        chdir: /home/ubuntu/koko-project/koko-project/
+        cmd: python3 app.py
+      async: 1000
+      poll: 0
+
+    - name: grep apps running process
+      shell: netstat -anpe | grep "5000" | grep "LISTEN"
+      register: app_status
+    
+    - debug: msg={{app_status.stdout_lines}}
