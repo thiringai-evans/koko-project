@@ -1,3 +1,2 @@
-## This project belongs to a complete DevOps bootcamp
+Project for configuring servers with ansible
 
-[👉 Techworld with Nana DevOps program](https://www.techworld-with-nana.com/devops-bootcamp)
