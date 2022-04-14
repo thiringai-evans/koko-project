@@ -1,0 +1,10 @@
+replicaCount: 4
+
+image:
+  repository: thiringai/sample-microservice
+  tag: latest
+  pullPolicy: Always
+
+service:
+  type: ClusterIP
+  port: 8080wq

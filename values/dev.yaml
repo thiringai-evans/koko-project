@@ -1,0 +1,10 @@
+replicaCount: 1
+
+image:
+  repository: thiringai/sample-microservice
+  tag: latest
+  pullPolicy: Always
+
+service:
+  type: ClusterIP
+  port: 5000
