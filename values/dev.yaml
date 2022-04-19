@@ -2,7 +2,7 @@ replicaCount: 1
 
 image:
   repository: thiringai/sample-microservice
-  tag: latest
+  tag: dev-five
   pullPolicy: Always
 
 service:
